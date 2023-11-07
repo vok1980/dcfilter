@@ -37,6 +37,20 @@ static inline FILE *openFile(
 }
 
 
+static char *useString = "Usage: %s [-nv?] [-o outfile] <file>\n\
+  -o <file> - put output in <file>\n\
+  -n        - do not output graph\n\
+  -v        - verbose\n\
+  -?        - print usage\n";
+
+
+static void usage(int v)
+{
+    fprintf(stderr, useString, cmd);
+    exit(v);
+}
+
+
 static void init(int argc, char *argv[])
 {
     int c;
@@ -44,6 +58,7 @@ static void init(int argc, char *argv[])
     cmd = argv[0];
     opterr = 0;
     while ((c = getopt(argc, argv, ":vno:")) != -1)
+
     switch (c) {
     case 'o':
         if (outFile != NULL)
@@ -55,6 +70,19 @@ static void init(int argc, char *argv[])
         break;
     case 'v':
         Verbose = 1;
+        break;
+    case '?':
+        if (optopt == '?')
+            usage(0);
+        else {
+            fprintf(stderr, "%s: option -%c unrecognized\n", cmd, optopt);
+            usage(-1);
+        }
+        break;
+    case ':':
+        fprintf(stderr, "%s: missing argument for option -%c\n",
+            cmd, optopt);
+        usage(-1);
         break;
     default:
         UNREACHABLE();
