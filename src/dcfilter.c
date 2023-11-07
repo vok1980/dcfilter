@@ -7,6 +7,7 @@
 
 static FILE *inFile;
 static FILE *outFile;
+static int doWrite = 1;
 static int Verbose = 0;
 static char *cmd;
 
@@ -49,6 +50,9 @@ static void init(int argc, char *argv[])
         fclose(outFile);
         outFile = openFile(argv[0], optarg, "w");
         break;
+    case 'n':
+        doWrite = 0;
+        break;
     case 'v':
         Verbose = 1;
         break;
@@ -82,6 +86,11 @@ int main(int argc, char *argv[])
         if (Verbose)
             fprintf(stderr, "Graph \"%s\" is undirected\n", agnameof(g));
         return -1;
+    }
+
+    if (doWrite) {
+        agwrite(g, outFile);
+        fflush(outFile);
     }
 
     return 0;
