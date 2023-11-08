@@ -11,6 +11,9 @@ endmacro()
 
 add_test_dcfilter(simple)
 add_test_dcfilter(three)
+add_test_dcfilter(long_cycle)
+add_test_dcfilter(two_cycles)
+add_test_dcfilter(three_cycles)
 
 
 include(FetchContent)

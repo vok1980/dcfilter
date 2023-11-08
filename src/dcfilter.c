@@ -216,12 +216,9 @@ int main(int argc, char *argv[])
     // If node does not depend on itself, than it does not enters any cycle.
     for (int i = 0; i < nodes_count; ++i)
     {
-        if (NULL != table[i].deps)
+        if (NULL == table[i].deps || !bit_array_get(table[i].deps, i))
         {
-            if (!bit_array_get(table[i].deps, i))
-            {
-                agdelnode(g, table[i].node);
-            }
+            agdelnode(g, table[i].node);
         }
     }
 
