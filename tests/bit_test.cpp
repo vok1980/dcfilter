@@ -15,6 +15,7 @@ TEST_P(ArraySizeParameterizedTestFixture, CheckArraySize)
     std::pair<int, int> data = GetParam();
 
     BIT_ARRAY* array = bit_array_create(data.first);
+    EXPECT_TRUE(NULL != array);
     EXPECT_EQ(array->num_of_bits, data.second);
     bit_array_free(array);
 }
@@ -54,6 +55,7 @@ INSTANTIATE_TEST_SUITE_P(ArraySizeTests,
 TEST(BitArray, CheckBitSet)
 {
     BIT_ARRAY* array = bit_array_create(9);
+    EXPECT_TRUE(NULL != array);
     EXPECT_EQ(array->num_of_bits, 16);
 
     bit_array_set(array, 7);
@@ -68,6 +70,10 @@ TEST(BitArray, CheckBitSet)
     EXPECT_EQ(*array->buffer, 1);
     EXPECT_EQ(*(array->buffer + 1), 65);
 
+    bit_array_set(array, 0);
+    EXPECT_EQ(*array->buffer, 129);
+    EXPECT_EQ(*(array->buffer + 1), 65);
+
     ASSERT_DEBUG_DEATH(bit_array_set(array, 16), "");
 
     bit_array_free(array);
@@ -77,6 +83,7 @@ TEST(BitArray, CheckBitSet)
 TEST(BitArray, CheckBitGet)
 {
     BIT_ARRAY* array = bit_array_create(14);
+    EXPECT_TRUE(NULL != array);
     EXPECT_EQ(array->num_of_bits, 16);
 
     bit_array_set(array, 7);

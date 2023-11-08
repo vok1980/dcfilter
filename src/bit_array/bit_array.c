@@ -50,17 +50,29 @@ Offset calc_offset(uint64_t offset_bits)
 
 void bit_array_set(BIT_ARRAY* bitarray, uint64_t offset_bits)
 {
+    assert(bitarray);
     assert(bitarray->num_of_bits > offset_bits);
-    Offset offset = calc_offset(offset_bits);
-    uint8_t* p = bitarray->buffer + offset.byte;
-    *p = *p | offset.bit_mask;
+
+    if (bitarray->num_of_bits > offset_bits)
+    {
+        Offset offset = calc_offset(offset_bits);
+        uint8_t* p = bitarray->buffer + offset.byte;
+        *p = *p | offset.bit_mask;
+    }
 }
 
 
 uint8_t bit_array_get(BIT_ARRAY* bitarray, uint64_t offset_bits)
 {
+    assert(bitarray);
     assert(bitarray->num_of_bits > offset_bits);
-    Offset offset = calc_offset(offset_bits);
-    uint8_t* p = bitarray->buffer + offset.byte;
-    return *p & offset.bit_mask;
+
+    if (bitarray->num_of_bits > offset_bits)
+    {
+        Offset offset = calc_offset(offset_bits);
+        uint8_t* p = bitarray->buffer + offset.byte;
+        return *p & offset.bit_mask;
+    }
+
+    return 0;
 }
