@@ -98,3 +98,37 @@ TEST(BitArray, CheckBitGet)
 
     bit_array_free(array);
 }
+
+
+TEST(BitArray, CheckBitwiseOr)
+{
+    BIT_ARRAY* arrayA = bit_array_create(16);
+    EXPECT_TRUE(NULL != arrayA);
+    EXPECT_EQ(arrayA->num_of_bits, 16);
+
+    BIT_ARRAY* arrayB = bit_array_create(16);
+    EXPECT_TRUE(NULL != arrayB);
+    EXPECT_EQ(arrayB->num_of_bits, 16);
+
+    bit_array_set(arrayA, 0);
+    bit_array_set(arrayA, 1);
+    bit_array_set(arrayA, 4);
+    bit_array_set(arrayA, 12);
+    bit_array_set(arrayA, 13);
+
+    bit_array_set(arrayB, 0);
+    bit_array_set(arrayB, 2);
+    bit_array_set(arrayB, 4);
+    bit_array_set(arrayB, 10);
+    bit_array_set(arrayB, 15);
+
+    bit_array_or(arrayA, arrayA, arrayB);
+
+//  1100 1000 | 1010 1000 = 1110 1000
+    EXPECT_EQ(*(arrayA->buffer + 0), 232);
+//  0000 1100 | 0010 0001 = 0010 1101
+    EXPECT_EQ(*(arrayA->buffer + 1), 45);
+
+    bit_array_free(arrayA);
+    bit_array_free(arrayB);
+}

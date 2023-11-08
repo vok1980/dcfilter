@@ -76,3 +76,28 @@ uint8_t bit_array_get(BIT_ARRAY* bitarray, uint64_t offset_bits)
 
     return 0;
 }
+
+
+BIT_ARRAY* bit_array_or(BIT_ARRAY* dst, BIT_ARRAY* src1, BIT_ARRAY* src2)
+{
+    assert(src1);
+    assert(src2);
+    assert(dst);
+    assert(src1->buffer);
+    assert(src2->buffer);
+    assert(dst->buffer);
+    assert(src1->num_of_bits == src2->num_of_bits);
+    assert(dst->num_of_bits == src2->num_of_bits);
+
+    if (src1 && src2 && dst &&
+        src1->num_of_bits == src2->num_of_bits &&
+        dst->num_of_bits == src2->num_of_bits)
+    {
+        for (uint64_t i = 0; i < dst->num_of_bits / 8; ++i)
+        {
+            dst->buffer[i] = src1->buffer[i] | src2->buffer[i];
+        }
+    }
+
+    return dst;
+}
