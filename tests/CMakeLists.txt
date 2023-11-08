@@ -10,3 +10,4 @@ macro(ADD_TEST_DCFILTER name)
 endmacro()
 
 add_test_dcfilter(simple)
+add_test_dcfilter(three)
