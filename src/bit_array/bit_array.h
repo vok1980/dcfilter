@@ -23,6 +23,7 @@ void bit_array_unset(BIT_ARRAY* bitarray, uint64_t offset);
 uint8_t bit_array_get(BIT_ARRAY* bitarray, uint64_t offset);
 
 BIT_ARRAY* bit_array_or(BIT_ARRAY* dst, BIT_ARRAY* src1, BIT_ARRAY* src2);
+int bit_array_eq(BIT_ARRAY* src1, BIT_ARRAY* src2);
 
 #ifdef __cplusplus
 }

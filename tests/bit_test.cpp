@@ -160,6 +160,38 @@ TEST(BitArray, CheckUnset)
 }
 
 
+TEST(BitArray, CheckEq)
+{
+    BIT_ARRAY* arrayA = bit_array_create(8);
+    EXPECT_TRUE(NULL != arrayA);
+    EXPECT_EQ(arrayA->num_of_bits, 8);
+
+    BIT_ARRAY* arrayB = bit_array_create(8);
+    EXPECT_TRUE(NULL != arrayB);
+    EXPECT_EQ(arrayB->num_of_bits, 8);
+
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+
+    bit_array_set(arrayA, 4);
+    EXPECT_TRUE(!bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayB, 4);
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+
+    bit_array_set(arrayA, 7);
+    EXPECT_TRUE(!bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayB, 7);
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+
+    bit_array_set(arrayA, 1);
+    EXPECT_TRUE(!bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayB, 1);
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+
+    bit_array_free(arrayA);
+    bit_array_free(arrayB);
+}
+
+
 TEST(BitArray, CheckBitwiseOr)
 {
     BIT_ARRAY* arrayA = bit_array_create(16);

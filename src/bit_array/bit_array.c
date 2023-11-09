@@ -115,3 +115,26 @@ BIT_ARRAY* bit_array_or(BIT_ARRAY* dst, BIT_ARRAY* src1, BIT_ARRAY* src2)
 
     return dst;
 }
+
+
+int bit_array_eq(BIT_ARRAY* src1, BIT_ARRAY* src2)
+{
+    assert(src1);
+    assert(src2);
+    assert(src1->buffer);
+    assert(src2->buffer);
+    assert(src1->num_of_bits == src2->num_of_bits);
+
+    if (src1 && src2 && src1->num_of_bits == src2->num_of_bits)
+    {
+        for (uint64_t i = 0; i < src1->num_of_bits / 8; ++i)
+        {
+            if (src1->buffer[i] != src2->buffer[i])
+            {
+                return 0;
+            }
+        }
+    }
+
+    return 1;
+}
