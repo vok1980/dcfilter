@@ -138,3 +138,24 @@ int bit_array_eq(BIT_ARRAY* src1, BIT_ARRAY* src2)
 
     return 1;
 }
+
+
+uint64_t bit_array_hash(BIT_ARRAY* bitarray, uint64_t mix /*= 0*/)
+{
+    const uint64_t mulp = 2654435789;
+    mix ^= 104395301;
+
+    assert(NULL != bitarray);
+    assert(NULL != bitarray->buffer);
+
+    if (NULL != bitarray && NULL != bitarray->buffer)
+    {
+        for (int lc = 0; lc < bitarray->num_of_bits / 8; ++lc)
+        {
+            uint8_t val = bitarray->buffer[lc];
+            mix += (val ^ mix) * (mix >> 23);
+        }
+    }
+
+    return mix ^ (mix << 37);
+}
