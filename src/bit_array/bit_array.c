@@ -12,7 +12,7 @@ BIT_ARRAY* bit_array_create(uint64_t nbits)
     if (NULL != bitarr)
     {
         bitarr->num_of_bits = (nbits / 8 + (nbits % 8 ? 1 : 0)) * 8;
-        bitarr->buffer = (uint8_t*)malloc(bitarr->num_of_bits);
+        bitarr->buffer = (uint8_t*)calloc(bitarr->num_of_bits / 8, sizeof(uint8_t));
     }
 
     return bitarr;

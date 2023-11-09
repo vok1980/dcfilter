@@ -62,6 +62,35 @@ INSTANTIATE_TEST_SUITE_P(ArraySizeTests,
                         ));
 
 
+TEST(BitArray, CheckBigArray)
+{
+    BIT_ARRAY* arrayA = bit_array_create(512);
+    EXPECT_TRUE(NULL != arrayA);
+    EXPECT_EQ(arrayA->num_of_bits, 512);
+    BIT_ARRAY* arrayB = bit_array_create(512);
+    EXPECT_TRUE(NULL != arrayB);
+    EXPECT_EQ(arrayB->num_of_bits, 512);
+
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayA, 128);
+    EXPECT_TRUE(!bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayB, 128);
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayB, 129);
+    EXPECT_TRUE(!bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayA, 129);
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+
+    bit_array_set(arrayA, 511);
+    EXPECT_TRUE(!bit_array_eq(arrayA, arrayB));
+    bit_array_set(arrayB, 511);
+    EXPECT_TRUE(bit_array_eq(arrayA, arrayB));
+
+    bit_array_free(arrayA);
+    bit_array_free(arrayB);
+}
+
+
 TEST(BitArray, CheckBitSet)
 {
     BIT_ARRAY* array = bit_array_create(9);
