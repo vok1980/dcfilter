@@ -1,0 +1,1 @@
+digraph { AA -> AB; AB -> AA; AA -> CA; CA -> CB; CB -> CD; CD -> CA; AA -> XA; AB -> XB; CD -> XD }
