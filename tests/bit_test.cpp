@@ -4,6 +4,16 @@
 #include "../src/bit_array/bit_array.h"
 
 
+#define BIT0 (1 << 7)
+#define BIT1 (1 << 6)
+#define BIT2 (1 << 5)
+#define BIT3 (1 << 4)
+#define BIT4 (1 << 3)
+#define BIT5 (1 << 2)
+#define BIT6 (1 << 1)
+#define BIT7 (1 << 0)
+
+
 class ArraySizeParameterizedTestFixture :
     public ::testing::TestWithParam<std::pair<int, int>>
 {
@@ -95,6 +105,56 @@ TEST(BitArray, CheckBitGet)
     EXPECT_TRUE(bit_array_get(array, 7));
     EXPECT_FALSE(bit_array_get(array, 6));
     EXPECT_TRUE(bit_array_get(array, 8));
+
+    bit_array_free(array);
+}
+
+
+TEST(BitArray, CheckUnset)
+{
+    BIT_ARRAY* array = bit_array_create(8);
+    EXPECT_TRUE(NULL != array);
+    EXPECT_EQ(array->num_of_bits, 8);
+
+    for (int i = 0; i < 8; ++i)
+    {
+        bit_array_set(array, i);
+    }
+
+    EXPECT_EQ(*array->buffer, BIT0 + BIT1 + BIT2 + BIT3 + BIT4 + BIT5 + BIT6 + BIT7);
+
+    bit_array_unset(array, 0);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + BIT3 + BIT4 + BIT5 + BIT6 + BIT7);
+
+    bit_array_unset(array, 0);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + BIT3 + BIT4 + BIT5 + BIT6 + BIT7);
+
+    bit_array_unset(array, 3);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + 0    + BIT4 + BIT5 + BIT6 + BIT7);
+
+    bit_array_unset(array, 7);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + 0    + BIT4 + BIT5 + BIT6 + 0   );
+
+    bit_array_unset(array, 7);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + 0    + BIT4 + BIT5 + BIT6 + 0   );
+
+    bit_array_unset(array, 5);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + 0    + BIT4 + 0    + BIT6 + 0   );
+
+    bit_array_unset(array, 6);
+    EXPECT_EQ(*array->buffer, 0    + BIT1 + BIT2 + 0    + BIT4 + 0    + 0    + 0   );
+
+    bit_array_unset(array, 1);
+    EXPECT_EQ(*array->buffer, 0    + 0    + BIT2 + 0    + BIT4 + 0    + 0    + 0   );
+
+    bit_array_unset(array, 1);
+    EXPECT_EQ(*array->buffer, 0    + 0    + BIT2 + 0    + BIT4 + 0    + 0    + 0   );
+
+    bit_array_unset(array, 2);
+    EXPECT_EQ(*array->buffer, 0    + 0    + 0    + 0    + BIT4 + 0    + 0    + 0   );
+
+    bit_array_unset(array, 4);
+    EXPECT_EQ(*array->buffer, 0    + 0    + 0    + 0    + 0    + 0    + 0    + 0   );
 
     bit_array_free(array);
 }
