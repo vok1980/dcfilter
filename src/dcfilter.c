@@ -226,6 +226,26 @@ int main(int argc, char *argv[])
         }
     }
 
+    // Create subgraphs for every cycle
+    for (int i = 0; i < nodes_count; ++i)
+    {
+        if (NULL != table[i].node)
+        {
+            // All nodes in cycle have equal deps tables.
+            // Thats why we can use deps hash as submodule id.
+            uint64_t hash = bit_array_hash(table[i].deps, 0);
+            char str[64];
+            sprintf(str, "cluster_0x%lX", hash);
+
+            Agraph_t *h;
+            h = agsubg(g, str, FALSE);
+            if (!h)
+                h = agsubg(g, str, TRUE);
+
+            agsubnode(h, table[i].node, TRUE);
+        }
+    }
+
     if (doWrite) {
         agwrite(g, outFile);
         fflush(outFile);

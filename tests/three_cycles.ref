@@ -1,4 +1,17 @@
 digraph {
+	subgraph cluster_0xA3F6FCF7151F1422 {
+		A;
+		B;
+		C;
+	}
+	subgraph cluster_0x7EA458F56BF58102 {
+		E;
+		F;
+	}
+	subgraph cluster_0x7DC7E4F4FBEE9CE2 {
+		L;
+		M;
+	}
 	A -> B;
 	B -> C;
 	C -> A;
