@@ -14,6 +14,7 @@ add_test_dcfilter(three)
 add_test_dcfilter(long_cycle)
 add_test_dcfilter(two_cycles)
 add_test_dcfilter(three_cycles)
+add_test_dcfilter(three_cycles_complicated)
 
 
 include(FetchContent)
