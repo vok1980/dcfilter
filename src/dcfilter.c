@@ -246,6 +246,11 @@ int main(int argc, char *argv[])
         }
     }
 
+    if (Verbose)
+    {
+        fprintf(stderr, "%d cycles detected\n", agnsubg(g)-1);
+    }
+
     if (doWrite) {
         agwrite(g, outFile);
         fflush(outFile);
