@@ -222,6 +222,7 @@ int main(int argc, char *argv[])
         if (NULL == table[i].deps || !bit_array_get(table[i].deps, i))
         {
             agdelnode(g, table[i].node);
+            table[i].node = NULL;
         }
     }
 
