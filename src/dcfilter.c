@@ -213,6 +213,9 @@ int main(int argc, char *argv[])
         }
     }
 
+    bit_array_free(zero);
+    zero = NULL;
+
     // If node does not depend on itself, than it does not enters any cycle.
     for (int i = 0; i < nodes_count; ++i)
     {
