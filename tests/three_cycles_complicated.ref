@@ -15,13 +15,21 @@ digraph {
 	A -> B;
 	B -> C;
 	C -> A;
+	D -> E;
 	E -> A;
 	E -> F;
 	F -> C;
 	F -> E;
+	G -> H;
+	H -> I;
+	I -> J;
+	J -> K;
+	K -> L;
 	L -> B;
 	L -> E;
 	L -> M;
 	M -> C;
 	M -> L;
+	T -> W;
+	Y -> Z;
 }

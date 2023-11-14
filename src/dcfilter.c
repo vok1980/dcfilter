@@ -13,6 +13,7 @@ static FILE *inFile;
 static FILE *outFile;
 static int doWrite = 1;
 static int Verbose = 0;
+static int deleteUncycled = 0;
 static char *cmd;
 
 
@@ -45,6 +46,7 @@ static char *useString = "Usage: %s [-nv?] [-o outfile] <file>\n\
   -o <file> - put output in <file>\n\
   -n        - do not output graph\n\
   -v        - verbose\n\
+  -d        - delete not cycled nodes\n\
   -?        - print usage\n";
 
 
@@ -61,7 +63,7 @@ static void init(int argc, char *argv[])
 
     cmd = argv[0];
     opterr = 0;
-    while ((c = getopt(argc, argv, ":vno:")) != -1)
+    while ((c = getopt(argc, argv, ":vdno:")) != -1)
 
     switch (c) {
     case 'o':
@@ -74,6 +76,9 @@ static void init(int argc, char *argv[])
         break;
     case 'v':
         Verbose = 1;
+        break;
+    case 'd':
+        deleteUncycled = 1;
         break;
     case '?':
         if (optopt == '?')
@@ -216,20 +221,24 @@ int main(int argc, char *argv[])
     bit_array_free(zero);
     zero = NULL;
 
-    // If node does not depend on itself, than it does not enters any cycle.
-    for (int i = 0; i < nodes_count; ++i)
+    if (deleteUncycled)
     {
-        if (NULL == table[i].deps || !bit_array_get(table[i].deps, i))
+        for (int i = 0; i < nodes_count; ++i)
         {
-            agdelnode(g, table[i].node);
-            table[i].node = NULL;
+            // If node does not depend on itself, than it does not enters any cycle.
+            if (NULL == table[i].deps || !bit_array_get(table[i].deps, i))
+            {
+                agdelnode(g, table[i].node);
+                table[i].node = NULL;
+            }
         }
     }
 
     // Create subgraphs for every cycle
     for (int i = 0; i < nodes_count; ++i)
     {
-        if (NULL != table[i].node)
+        // If node does not depend on itself, than it does not enters any cycle.
+        if (NULL != table[i].deps && bit_array_get(table[i].deps, i))
         {
             // All nodes in cycle have equal deps tables.
             // Thats why we can use deps hash as submodule id.

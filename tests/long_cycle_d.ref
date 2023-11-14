@@ -5,7 +5,6 @@ digraph {
 		AD;
 		AE;
 	}
-	AA -> AB;
 	AB -> AC;
 	AC -> AD;
 	AD -> AE;
