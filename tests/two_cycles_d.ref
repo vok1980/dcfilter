@@ -10,11 +10,8 @@ digraph {
 	}
 	AA -> AB;
 	AA -> CA;
-	AA -> XA;
 	AB -> AA;
-	AB -> XB;
 	CA -> CB;
 	CB -> CD;
 	CD -> CA;
-	CD -> XD;
 }

@@ -221,6 +221,29 @@ TEST(BitArray, CheckEq)
 }
 
 
+TEST(BitArray, CheckHash)
+{
+    std::set<uint64_t> all_hashes;
+
+    for (int size = 0; size < 1024; size += 8)
+    {
+        BIT_ARRAY* array = bit_array_create(size);
+        EXPECT_TRUE(NULL != array);
+        EXPECT_EQ(array->num_of_bits, size);
+
+        for (int i = 0; i < size; ++i)
+        {
+            bit_array_set(array, i);
+            uint64_t hash = bit_array_hash(array, 0);
+            EXPECT_TRUE(all_hashes.end() == all_hashes.find(hash));
+            all_hashes.insert(hash);
+        }
+
+        bit_array_free(array);
+    }
+}
+
+
 TEST(BitArray, CheckBitwiseOr)
 {
     BIT_ARRAY* arrayA = bit_array_create(16);
