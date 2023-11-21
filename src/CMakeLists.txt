@@ -16,3 +16,8 @@ target_link_libraries(dcfilter
         cgraph
         gvc
 )
+
+install(
+    TARGETS dcfilter
+    DESTINATION bin
+)
