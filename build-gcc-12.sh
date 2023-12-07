@@ -1,7 +1,13 @@
 #!/bin/bash
 
 rm -rf build && mkdir build && cd build \
-    && conan install .. --build=missing -s compiler=gcc -s compiler.version=12 -s compiler.libcxx=libstdc++11 --generator=cmake_paths -s build_type=Release \
+    && conan install .. \
+        --build=missing \
+        -s compiler=gcc \
+        -s compiler.version=12 \
+        -s compiler.libcxx=libstdc++11 \
+        --generator=cmake_paths \
+        -s build_type=Release \
     && cmake .. \
         -G Ninja \
         -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake \
