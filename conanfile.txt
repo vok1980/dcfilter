@@ -2,4 +2,4 @@
     gtest/1.14.0
 
 [options]
-    gtest:build_gmock=False
+    gtest/*:build_gmock=False
