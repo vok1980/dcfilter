@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
         if (NULL != table[i].deps && bit_array_get(table[i].deps, i))
         {
             // All nodes in cycle have equal deps tables.
-            // Thats why we can use deps hash as submodule id.
+            // Thats why we can use deps hash as cycle id.
             uint64_t hash = bit_array_hash(table[i].deps, 0);
             char str[64];
             sprintf(str, "cluster_0x%lX", hash);
