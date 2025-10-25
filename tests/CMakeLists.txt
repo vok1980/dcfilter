@@ -1,3 +1,4 @@
+include(GoogleTest)
 
 macro(ADD_TEST_DCFILTER_D name)
     add_test(
