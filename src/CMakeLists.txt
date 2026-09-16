@@ -32,12 +32,12 @@ if (MSVC)
         REQUIRED
     )
     find_library(GRAPHVIZ_CGRAPH_LIBRARY
-        NAMES cgraph
+        NAMES cgraph libcgraph
         PATHS ${GRAPHVIZ_ROOT}/lib
         REQUIRED
     )
     find_library(GRAPHVIZ_GVC_LIBRARY
-        NAMES gvc
+        NAMES gvc libgvc
         PATHS ${GRAPHVIZ_ROOT}/lib
         REQUIRED
     )
