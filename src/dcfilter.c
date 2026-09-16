@@ -245,7 +245,7 @@ int main(int argc, char *argv[])
             // Thats why we can use deps hash as cycle id.
             uint64_t hash = bit_array_hash(table[i].deps, 0);
             char str[64];
-            sprintf(str, "cluster_0x%" PRIX64, hash);
+            snprintf(str, sizeof(str), "cluster_0x%" PRIX64, hash);
 
             Agraph_t *h;
             h = agsubg(g, str, 0);
