@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <inttypes.h>
 
 #include <graphviz/cgraph.h>
 
@@ -244,14 +245,14 @@ int main(int argc, char *argv[])
             // Thats why we can use deps hash as cycle id.
             uint64_t hash = bit_array_hash(table[i].deps, 0);
             char str[64];
-            sprintf(str, "cluster_0x%lX", hash);
+            sprintf(str, "cluster_0x%" PRIX64, hash);
 
             Agraph_t *h;
-            h = agsubg(g, str, FALSE);
+            h = agsubg(g, str, 0);
             if (!h)
-                h = agsubg(g, str, TRUE);
+                h = agsubg(g, str, 1);
 
-            agsubnode(h, table[i].node, TRUE);
+            agsubnode(h, table[i].node, 1);
         }
     }
 
