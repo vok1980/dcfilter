@@ -12,9 +12,6 @@
 
 #define DCFILTER_COMPAT_GETOPT_H
 
-/* All the headers include this file. */
-#include <crtdefs.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
