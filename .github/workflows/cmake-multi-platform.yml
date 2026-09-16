@@ -49,7 +49,7 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Setup Graphviz
-      uses: ts-graphviz/setup-graphviz@v1.2.0
+      uses: ts-graphviz/setup-graphviz@v2
 
     - name: Install Conan
       id: conan
