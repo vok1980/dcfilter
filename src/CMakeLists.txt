@@ -51,14 +51,54 @@ if (MSVC)
         NAMES cgraph
         HINTS ${GRAPHVIZ_SEARCH_ROOTS}
         PATH_SUFFIXES lib lib/graphviz
-        REQUIRED
     )
+    if (NOT GRAPHVIZ_CGRAPH_LIBRARY)
+        foreach(GRAPHVIZ_SEARCH_ROOT IN LISTS GRAPHVIZ_SEARCH_ROOTS)
+            foreach(GRAPHVIZ_LIBRARY_SUFFIX IN ITEMS lib lib/graphviz)
+                file(GLOB GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES
+                    LIST_DIRECTORIES FALSE
+                    "${GRAPHVIZ_SEARCH_ROOT}/${GRAPHVIZ_LIBRARY_SUFFIX}/cgraph*.lib"
+                )
+                if (GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES)
+                    list(SORT GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES)
+                    list(GET GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES 0 GRAPHVIZ_CGRAPH_LIBRARY)
+                    break()
+                endif()
+            endforeach()
+            if (GRAPHVIZ_CGRAPH_LIBRARY)
+                break()
+            endif()
+        endforeach()
+    endif()
+    if (NOT GRAPHVIZ_CGRAPH_LIBRARY)
+        message(FATAL_ERROR "Could not find Graphviz cgraph library")
+    endif()
     find_library(GRAPHVIZ_GVC_LIBRARY
         NAMES gvc
         HINTS ${GRAPHVIZ_SEARCH_ROOTS}
         PATH_SUFFIXES lib lib/graphviz
-        REQUIRED
     )
+    if (NOT GRAPHVIZ_GVC_LIBRARY)
+        foreach(GRAPHVIZ_SEARCH_ROOT IN LISTS GRAPHVIZ_SEARCH_ROOTS)
+            foreach(GRAPHVIZ_LIBRARY_SUFFIX IN ITEMS lib lib/graphviz)
+                file(GLOB GRAPHVIZ_GVC_LIBRARY_CANDIDATES
+                    LIST_DIRECTORIES FALSE
+                    "${GRAPHVIZ_SEARCH_ROOT}/${GRAPHVIZ_LIBRARY_SUFFIX}/gvc*.lib"
+                )
+                if (GRAPHVIZ_GVC_LIBRARY_CANDIDATES)
+                    list(SORT GRAPHVIZ_GVC_LIBRARY_CANDIDATES)
+                    list(GET GRAPHVIZ_GVC_LIBRARY_CANDIDATES 0 GRAPHVIZ_GVC_LIBRARY)
+                    break()
+                endif()
+            endforeach()
+            if (GRAPHVIZ_GVC_LIBRARY)
+                break()
+            endif()
+        endforeach()
+    endif()
+    if (NOT GRAPHVIZ_GVC_LIBRARY)
+        message(FATAL_ERROR "Could not find Graphviz gvc library")
+    endif()
 
     target_sources(dcfilter
         PRIVATE
