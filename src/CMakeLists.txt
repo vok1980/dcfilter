@@ -19,7 +19,6 @@ if (MSVC)
     set(GRAPHVIZ_SEARCH_ROOTS
         "$ENV{ProgramW6432}/Graphviz"
         "$ENV{ProgramFiles}/Graphviz"
-        "$ENV{ProgramFiles\\(x86\\)}/Graphviz"
     )
 
     if (GRAPHVIZ_ROOT)
@@ -27,11 +26,12 @@ if (MSVC)
     else()
         find_program(GRAPHVIZ_DOT_EXECUTABLE
             NAMES dot
-            REQUIRED
         )
-        get_filename_component(GRAPHVIZ_BIN_DIR "${GRAPHVIZ_DOT_EXECUTABLE}" DIRECTORY)
-        get_filename_component(GRAPHVIZ_ROOT "${GRAPHVIZ_BIN_DIR}" DIRECTORY)
-        list(PREPEND GRAPHVIZ_SEARCH_ROOTS "${GRAPHVIZ_ROOT}")
+        if (GRAPHVIZ_DOT_EXECUTABLE)
+            get_filename_component(GRAPHVIZ_BIN_DIR "${GRAPHVIZ_DOT_EXECUTABLE}" DIRECTORY)
+            get_filename_component(GRAPHVIZ_ROOT "${GRAPHVIZ_BIN_DIR}" DIRECTORY)
+            list(PREPEND GRAPHVIZ_SEARCH_ROOTS "${GRAPHVIZ_ROOT}")
+        endif()
     endif()
 
     find_path(GRAPHVIZ_INCLUDE_DIR
