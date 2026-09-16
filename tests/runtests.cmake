@@ -17,10 +17,12 @@ endif()
 
 
 file(READ ${RESULT} RESULT_TEXT)
-file(READ ${REF} REF_CONTENT HEX)
+file(READ ${REF} REF_TEXT)
 
 string(REPLACE "\r\n" "\n" RESULT_TEXT "${RESULT_TEXT}")
+string(REPLACE "\r\n" "\n" REF_TEXT "${REF_TEXT}")
 string(HEX "${RESULT_TEXT}" RESULT_CONTENT)
+string(HEX "${REF_TEXT}" REF_CONTENT)
 
 if(NOT RESULT_CONTENT STREQUAL REF_CONTENT)
     message(FATAL_ERROR "Failed to match files ${RESULT} & ${REF}")
