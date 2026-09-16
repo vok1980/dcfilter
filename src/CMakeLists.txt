@@ -16,16 +16,17 @@ set(DCFILTER_GRAPHVIZ_LIBRARIES
 
 if (MSVC)
     set(GRAPHVIZ_ROOT "" CACHE PATH "Graphviz installation root")
-    set(GRAPHVIZ_SEARCH_ROOTS
-        "$ENV{ProgramW6432}/Graphviz"
-        "$ENV{ProgramFiles}/Graphviz"
-    )
-    file(GLOB GRAPHVIZ_PROGRAMW6432_ROOTS "$ENV{ProgramW6432}/Graphviz*")
-    file(GLOB GRAPHVIZ_PROGRAMFILES_ROOTS "$ENV{ProgramFiles}/Graphviz*")
-    list(APPEND GRAPHVIZ_SEARCH_ROOTS
-        ${GRAPHVIZ_PROGRAMW6432_ROOTS}
-        ${GRAPHVIZ_PROGRAMFILES_ROOTS}
-    )
+    set(GRAPHVIZ_SEARCH_ROOTS)
+    if (DEFINED ENV{ProgramW6432} AND NOT "$ENV{ProgramW6432}" STREQUAL "")
+        list(APPEND GRAPHVIZ_SEARCH_ROOTS "$ENV{ProgramW6432}/Graphviz")
+        file(GLOB GRAPHVIZ_PROGRAMW6432_ROOTS "$ENV{ProgramW6432}/Graphviz*")
+        list(APPEND GRAPHVIZ_SEARCH_ROOTS ${GRAPHVIZ_PROGRAMW6432_ROOTS})
+    endif()
+    if (DEFINED ENV{ProgramFiles} AND NOT "$ENV{ProgramFiles}" STREQUAL "")
+        list(APPEND GRAPHVIZ_SEARCH_ROOTS "$ENV{ProgramFiles}/Graphviz")
+        file(GLOB GRAPHVIZ_PROGRAMFILES_ROOTS "$ENV{ProgramFiles}/Graphviz*")
+        list(APPEND GRAPHVIZ_SEARCH_ROOTS ${GRAPHVIZ_PROGRAMFILES_ROOTS})
+    endif()
     list(REMOVE_DUPLICATES GRAPHVIZ_SEARCH_ROOTS)
 
     if (GRAPHVIZ_ROOT)

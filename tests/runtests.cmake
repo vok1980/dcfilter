@@ -20,7 +20,9 @@ file(READ ${RESULT} RESULT_TEXT)
 file(READ ${REF} REF_TEXT)
 
 string(REPLACE "\r\n" "\n" RESULT_TEXT "${RESULT_TEXT}")
+string(REPLACE "\r" "\n" RESULT_TEXT "${RESULT_TEXT}")
 string(REPLACE "\r\n" "\n" REF_TEXT "${REF_TEXT}")
+string(REPLACE "\r" "\n" REF_TEXT "${REF_TEXT}")
 string(HEX "${RESULT_TEXT}" RESULT_CONTENT)
 string(HEX "${REF_TEXT}" REF_CONTENT)
 
