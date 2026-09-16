@@ -33,7 +33,7 @@ extern int getopt(int nargc, char * const *nargv, const char *options);
  * guard while preserving the original MinGW compatibility macros.
  */
 
-#if !defined(__GETOPT_BSD_H__) && defined(_BSD_SOURCE)
+#if !defined(__GETOPT_BSD_H__) && (defined(_BSD_SOURCE) || defined(_DEFAULT_SOURCE))
 #define __GETOPT_BSD_H__
 /*
  * BSD adds the non-standard `optreset' feature, for reinitialisation
@@ -43,7 +43,7 @@ extern int getopt(int nargc, char * const *nargv, const char *options);
  */
 # define optreset  __mingw_optreset
 extern int optreset;
-#endif /* !defined(__GETOPT_BSD_H__) && defined(_BSD_SOURCE) */
+#endif /* !defined(__GETOPT_BSD_H__) && (defined(_BSD_SOURCE) || defined(_DEFAULT_SOURCE)) */
 
 #if !defined(__UNISTD_H_SOURCED__) && !defined(__GETOPT_LONG_H__)
 #define __GETOPT_LONG_H__
