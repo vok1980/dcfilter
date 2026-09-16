@@ -47,7 +47,7 @@ if (MSVC)
             HINTS ${GRAPHVIZ_SEARCH_ROOTS}
             PATH_SUFFIXES lib lib/graphviz
         )
-        if (${OUTVAR})
+        if (DEFINED ${OUTVAR} AND NOT "${${OUTVAR}}" MATCHES "-NOTFOUND$")
             set(${OUTVAR} "${${OUTVAR}}" PARENT_SCOPE)
             return()
         endif()
@@ -64,7 +64,7 @@ if (MSVC)
             HINTS ${GRAPHVIZ_SEARCH_ROOTS}
             PATH_SUFFIXES lib lib/graphviz
         )
-        if (${OUTVAR})
+        if (DEFINED ${OUTVAR} AND NOT "${${OUTVAR}}" MATCHES "-NOTFOUND$")
             set(${OUTVAR} "${${OUTVAR}}" PARENT_SCOPE)
             return()
         endif()
