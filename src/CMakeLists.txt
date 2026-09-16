@@ -20,6 +20,13 @@ if (MSVC)
         "$ENV{ProgramW6432}/Graphviz"
         "$ENV{ProgramFiles}/Graphviz"
     )
+    file(GLOB GRAPHVIZ_PROGRAMW6432_ROOTS "$ENV{ProgramW6432}/Graphviz*")
+    file(GLOB GRAPHVIZ_PROGRAMFILES_ROOTS "$ENV{ProgramFiles}/Graphviz*")
+    list(APPEND GRAPHVIZ_SEARCH_ROOTS
+        ${GRAPHVIZ_PROGRAMW6432_ROOTS}
+        ${GRAPHVIZ_PROGRAMFILES_ROOTS}
+    )
+    list(REMOVE_DUPLICATES GRAPHVIZ_SEARCH_ROOTS)
 
     if (GRAPHVIZ_ROOT)
         list(PREPEND GRAPHVIZ_SEARCH_ROOTS "${GRAPHVIZ_ROOT}")
