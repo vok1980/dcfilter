@@ -38,6 +38,15 @@ add_test_dcfilter(two_cycles)
 add_test_dcfilter(three_cycles)
 add_test_dcfilter(three_cycles_complicated)
 
+add_test(
+    NAME runtests_regression
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/runtests_regression.cmake
+)
+set_tests_properties(runtests_regression
+    PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 
 find_package(GTest REQUIRED)
 

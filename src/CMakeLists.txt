@@ -54,18 +54,27 @@ if (MSVC)
 
         unset(${OUTVAR} CACHE)
         unset(${OUTVAR})
-        set(GRAPHVIZ_LIBRARY_NAMES)
-        foreach(GRAPHVIZ_LIBRARY_VERSION RANGE 1 99)
-            list(PREPEND GRAPHVIZ_LIBRARY_NAMES "${BASENAME}-${GRAPHVIZ_LIBRARY_VERSION}.lib")
+        set(GRAPHVIZ_VERSIONED_LIBRARY "")
+        set(GRAPHVIZ_VERSIONED_LIBRARY_VERSION -1)
+        foreach(GRAPHVIZ_SEARCH_ROOT IN LISTS GRAPHVIZ_SEARCH_ROOTS)
+            foreach(GRAPHVIZ_LIBRARY_SUFFIX IN ITEMS lib lib/graphviz)
+                file(GLOB GRAPHVIZ_LIBRARY_CANDIDATES
+                    LIST_DIRECTORIES FALSE
+                    "${GRAPHVIZ_SEARCH_ROOT}/${GRAPHVIZ_LIBRARY_SUFFIX}/${BASENAME}-*.lib"
+                )
+                foreach(GRAPHVIZ_LIBRARY_CANDIDATE IN LISTS GRAPHVIZ_LIBRARY_CANDIDATES)
+                    get_filename_component(GRAPHVIZ_LIBRARY_NAME "${GRAPHVIZ_LIBRARY_CANDIDATE}" NAME)
+                    if (GRAPHVIZ_LIBRARY_NAME MATCHES "^${BASENAME}-([0-9]+)\\.lib$"
+                        AND CMAKE_MATCH_1 GREATER GRAPHVIZ_VERSIONED_LIBRARY_VERSION)
+                        set(GRAPHVIZ_VERSIONED_LIBRARY "${GRAPHVIZ_LIBRARY_CANDIDATE}")
+                        set(GRAPHVIZ_VERSIONED_LIBRARY_VERSION "${CMAKE_MATCH_1}")
+                    endif()
+                endforeach()
+            endforeach()
         endforeach()
 
-        find_file(${OUTVAR}
-            NAMES ${GRAPHVIZ_LIBRARY_NAMES}
-            HINTS ${GRAPHVIZ_SEARCH_ROOTS}
-            PATH_SUFFIXES lib lib/graphviz
-        )
-        if (DEFINED ${OUTVAR} AND NOT "${${OUTVAR}}" MATCHES "-NOTFOUND$")
-            set(${OUTVAR} "${${OUTVAR}}" PARENT_SCOPE)
+        if (GRAPHVIZ_VERSIONED_LIBRARY)
+            set(${OUTVAR} "${GRAPHVIZ_VERSIONED_LIBRARY}" PARENT_SCOPE)
             return()
         endif()
 
