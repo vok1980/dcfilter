@@ -41,64 +41,52 @@ if (MSVC)
         endif()
     endif()
 
+    function(dcfilter_find_graphviz_library OUTVAR BASENAME)
+        find_library(${OUTVAR}
+            NAMES ${BASENAME}
+            HINTS ${GRAPHVIZ_SEARCH_ROOTS}
+            PATH_SUFFIXES lib lib/graphviz
+        )
+        if (${OUTVAR})
+            set(${OUTVAR} "${${OUTVAR}}" PARENT_SCOPE)
+            return()
+        endif()
+
+        set(GRAPHVIZ_VERSIONED_LIBRARY "")
+        set(GRAPHVIZ_VERSIONED_LIBRARY_VERSION -1)
+        foreach(GRAPHVIZ_SEARCH_ROOT IN LISTS GRAPHVIZ_SEARCH_ROOTS)
+            foreach(GRAPHVIZ_LIBRARY_SUFFIX IN ITEMS lib lib/graphviz)
+                file(GLOB GRAPHVIZ_LIBRARY_CANDIDATES
+                    LIST_DIRECTORIES FALSE
+                    "${GRAPHVIZ_SEARCH_ROOT}/${GRAPHVIZ_LIBRARY_SUFFIX}/${BASENAME}-*.lib"
+                )
+                foreach(GRAPHVIZ_LIBRARY_CANDIDATE IN LISTS GRAPHVIZ_LIBRARY_CANDIDATES)
+                    get_filename_component(GRAPHVIZ_LIBRARY_NAME "${GRAPHVIZ_LIBRARY_CANDIDATE}" NAME)
+                    if (GRAPHVIZ_LIBRARY_NAME MATCHES "^${BASENAME}-([0-9]+)\\.lib$"
+                        AND CMAKE_MATCH_1 GREATER GRAPHVIZ_VERSIONED_LIBRARY_VERSION)
+                        set(GRAPHVIZ_VERSIONED_LIBRARY "${GRAPHVIZ_LIBRARY_CANDIDATE}")
+                        set(GRAPHVIZ_VERSIONED_LIBRARY_VERSION "${CMAKE_MATCH_1}")
+                    endif()
+                endforeach()
+            endforeach()
+        endforeach()
+
+        if (GRAPHVIZ_VERSIONED_LIBRARY)
+            set(${OUTVAR} "${GRAPHVIZ_VERSIONED_LIBRARY}" PARENT_SCOPE)
+            return()
+        endif()
+
+        message(FATAL_ERROR "Could not find Graphviz ${BASENAME} library")
+    endfunction()
+
     find_path(GRAPHVIZ_INCLUDE_DIR
         NAMES graphviz/cgraph.h
         HINTS ${GRAPHVIZ_SEARCH_ROOTS}
         PATH_SUFFIXES include
         REQUIRED
     )
-    find_library(GRAPHVIZ_CGRAPH_LIBRARY
-        NAMES cgraph
-        HINTS ${GRAPHVIZ_SEARCH_ROOTS}
-        PATH_SUFFIXES lib lib/graphviz
-    )
-    if (NOT GRAPHVIZ_CGRAPH_LIBRARY)
-        foreach(GRAPHVIZ_SEARCH_ROOT IN LISTS GRAPHVIZ_SEARCH_ROOTS)
-            foreach(GRAPHVIZ_LIBRARY_SUFFIX IN ITEMS lib lib/graphviz)
-                file(GLOB GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES
-                    LIST_DIRECTORIES FALSE
-                    "${GRAPHVIZ_SEARCH_ROOT}/${GRAPHVIZ_LIBRARY_SUFFIX}/cgraph*.lib"
-                )
-                if (GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES)
-                    list(SORT GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES)
-                    list(GET GRAPHVIZ_CGRAPH_LIBRARY_CANDIDATES 0 GRAPHVIZ_CGRAPH_LIBRARY)
-                    break()
-                endif()
-            endforeach()
-            if (GRAPHVIZ_CGRAPH_LIBRARY)
-                break()
-            endif()
-        endforeach()
-    endif()
-    if (NOT GRAPHVIZ_CGRAPH_LIBRARY)
-        message(FATAL_ERROR "Could not find Graphviz cgraph library")
-    endif()
-    find_library(GRAPHVIZ_GVC_LIBRARY
-        NAMES gvc
-        HINTS ${GRAPHVIZ_SEARCH_ROOTS}
-        PATH_SUFFIXES lib lib/graphviz
-    )
-    if (NOT GRAPHVIZ_GVC_LIBRARY)
-        foreach(GRAPHVIZ_SEARCH_ROOT IN LISTS GRAPHVIZ_SEARCH_ROOTS)
-            foreach(GRAPHVIZ_LIBRARY_SUFFIX IN ITEMS lib lib/graphviz)
-                file(GLOB GRAPHVIZ_GVC_LIBRARY_CANDIDATES
-                    LIST_DIRECTORIES FALSE
-                    "${GRAPHVIZ_SEARCH_ROOT}/${GRAPHVIZ_LIBRARY_SUFFIX}/gvc*.lib"
-                )
-                if (GRAPHVIZ_GVC_LIBRARY_CANDIDATES)
-                    list(SORT GRAPHVIZ_GVC_LIBRARY_CANDIDATES)
-                    list(GET GRAPHVIZ_GVC_LIBRARY_CANDIDATES 0 GRAPHVIZ_GVC_LIBRARY)
-                    break()
-                endif()
-            endforeach()
-            if (GRAPHVIZ_GVC_LIBRARY)
-                break()
-            endif()
-        endforeach()
-    endif()
-    if (NOT GRAPHVIZ_GVC_LIBRARY)
-        message(FATAL_ERROR "Could not find Graphviz gvc library")
-    endif()
+    dcfilter_find_graphviz_library(GRAPHVIZ_CGRAPH_LIBRARY cgraph)
+    dcfilter_find_graphviz_library(GRAPHVIZ_GVC_LIBRARY gvc)
 
     target_sources(dcfilter
         PRIVATE
