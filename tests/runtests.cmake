@@ -1,9 +1,13 @@
 
+if(NOT DEFINED RESULT)
+    set(RESULT ${CMAKE_CURRENT_BINARY_DIR}/result.out)
+endif()
+
 if(NOT SKIP_COMMAND)
     execute_process(
         COMMAND ${TARGET} ${OPTIONS}
         INPUT_FILE ${DATA}
-        OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/result.out
+        OUTPUT_FILE ${RESULT}
         RESULT_VARIABLE CMD_RESULT
     )
     if(CMD_RESULT)
@@ -12,11 +16,12 @@ if(NOT SKIP_COMMAND)
 endif()
 
 
-file(READ ${CMAKE_CURRENT_BINARY_DIR}/result.out RESULT_CONTENT HEX)
+file(READ ${RESULT} RESULT_TEXT)
 file(READ ${REF} REF_CONTENT HEX)
 
-string(REPLACE "0d0a" "0a" RESULT_CONTENT "${RESULT_CONTENT}")
+string(REPLACE "\r\n" "\n" RESULT_TEXT "${RESULT_TEXT}")
+string(HEX "${RESULT_TEXT}" RESULT_CONTENT)
 
 if(NOT RESULT_CONTENT STREQUAL REF_CONTENT)
-    message(FATAL_ERROR "Failed to match files ${CMAKE_CURRENT_BINARY_DIR}/result.out & ${REF}")
+    message(FATAL_ERROR "Failed to match files ${RESULT} & ${REF}")
 endif()
