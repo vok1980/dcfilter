@@ -10,10 +10,14 @@ if(CMD_RESULT)
 endif()
 
 
-execute_process(
-    COMMAND ${CMAKE_COMMAND} -E compare_files ${CMAKE_CURRENT_BINARY_DIR}/result.out ${REF}
-    RESULT_VARIABLE CMD_RESULT
-)
-if(CMD_RESULT)
+file(READ ${CMAKE_CURRENT_BINARY_DIR}/result.out RESULT_CONTENT)
+file(READ ${REF} REF_CONTENT)
+
+string(REPLACE "\r\n" "\n" RESULT_CONTENT "${RESULT_CONTENT}")
+string(REPLACE "\r" "\n" RESULT_CONTENT "${RESULT_CONTENT}")
+string(REPLACE "\r\n" "\n" REF_CONTENT "${REF_CONTENT}")
+string(REPLACE "\r" "\n" REF_CONTENT "${REF_CONTENT}")
+
+if(NOT RESULT_CONTENT STREQUAL REF_CONTENT)
     message(FATAL_ERROR "Failed to match files ${CMAKE_CURRENT_BINARY_DIR}/result.out & ${REF}")
 endif()
