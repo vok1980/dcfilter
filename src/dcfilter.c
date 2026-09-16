@@ -247,11 +247,11 @@ int main(int argc, char *argv[])
             sprintf(str, "cluster_0x%lX", hash);
 
             Agraph_t *h;
-            h = agsubg(g, str, FALSE);
+            h = agsubg(g, str, 0);
             if (!h)
-                h = agsubg(g, str, TRUE);
+                h = agsubg(g, str, 1);
 
-            agsubnode(h, table[i].node, TRUE);
+            agsubnode(h, table[i].node, 1);
         }
     }
 
