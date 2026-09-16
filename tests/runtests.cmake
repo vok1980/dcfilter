@@ -16,8 +16,8 @@ if(NOT SKIP_COMMAND)
 endif()
 
 
-file(READ ${RESULT} RESULT_TEXT)
-file(READ ${REF} REF_TEXT)
+file(READ "${RESULT}" RESULT_TEXT)
+file(READ "${REF}" REF_TEXT)
 
 string(REPLACE "\r\n" "\n" RESULT_TEXT "${RESULT_TEXT}")
 string(REPLACE "\r" "\n" RESULT_TEXT "${RESULT_TEXT}")
