@@ -16,33 +16,40 @@ set(DCFILTER_GRAPHVIZ_LIBRARIES
 
 if (MSVC)
     set(GRAPHVIZ_ROOT "" CACHE PATH "Graphviz installation root")
+    set(GRAPHVIZ_SEARCH_ROOTS
+        "$ENV{ProgramW6432}/Graphviz"
+        "$ENV{ProgramFiles}/Graphviz"
+        "$ENV{ProgramFiles\\(x86\\)}/Graphviz"
+    )
 
-    if (NOT GRAPHVIZ_ROOT)
+    if (GRAPHVIZ_ROOT)
+        list(PREPEND GRAPHVIZ_SEARCH_ROOTS "${GRAPHVIZ_ROOT}")
+    else()
         find_program(GRAPHVIZ_DOT_EXECUTABLE
             NAMES dot
             REQUIRED
         )
         get_filename_component(GRAPHVIZ_BIN_DIR "${GRAPHVIZ_DOT_EXECUTABLE}" DIRECTORY)
         get_filename_component(GRAPHVIZ_ROOT "${GRAPHVIZ_BIN_DIR}" DIRECTORY)
+        list(PREPEND GRAPHVIZ_SEARCH_ROOTS "${GRAPHVIZ_ROOT}")
     endif()
 
     find_path(GRAPHVIZ_INCLUDE_DIR
         NAMES graphviz/cgraph.h
-        PATHS ${GRAPHVIZ_ROOT}/include
+        HINTS ${GRAPHVIZ_SEARCH_ROOTS}
+        PATH_SUFFIXES include
         REQUIRED
     )
     find_library(GRAPHVIZ_CGRAPH_LIBRARY
         NAMES cgraph libcgraph
-        PATHS
-            ${GRAPHVIZ_ROOT}/lib
-            ${GRAPHVIZ_ROOT}/lib/graphviz
+        HINTS ${GRAPHVIZ_SEARCH_ROOTS}
+        PATH_SUFFIXES lib lib/graphviz
         REQUIRED
     )
     find_library(GRAPHVIZ_GVC_LIBRARY
         NAMES gvc libgvc
-        PATHS
-            ${GRAPHVIZ_ROOT}/lib
-            ${GRAPHVIZ_ROOT}/lib/graphviz
+        HINTS ${GRAPHVIZ_SEARCH_ROOTS}
+        PATH_SUFFIXES lib lib/graphviz
         REQUIRED
     )
 
