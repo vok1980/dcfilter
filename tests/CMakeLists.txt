@@ -47,6 +47,15 @@ set_tests_properties(runtests_regression
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+add_test(
+    NAME graphviz_lookup_regression
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/graphviz_lookup_regression.cmake
+)
+set_tests_properties(graphviz_lookup_regression
+    PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 
 find_package(GTest REQUIRED)
 
