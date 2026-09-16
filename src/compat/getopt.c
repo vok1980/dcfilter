@@ -1,6 +1,10 @@
 /*	$OpenBSD: getopt_long.c,v 1.23 2007/10/31 12:34:57 chl Exp $	*/
 /*	$NetBSD: getopt_long.c,v 1.15 2002/01/31 22:43:40 tv Exp $	*/
 
+/* Vendored from the OpenBSD/NetBSD getopt implementation and adjusted locally
+ * for dcfilter's Windows build support.
+ */
+
 /*
  * Copyright (c) 2002 Todd C. Miller <Todd.Miller@courtesan.com>
  *

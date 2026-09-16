@@ -10,6 +10,10 @@
  * warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+/* Vendored from the mingw-w64 getopt compatibility header and adjusted locally
+ * for dcfilter's Windows build support.
+ */
+
 #define DCFILTER_COMPAT_GETOPT_H
 
 #ifdef __cplusplus
