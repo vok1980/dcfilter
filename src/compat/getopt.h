@@ -1,4 +1,4 @@
-#ifndef __GETOPT_H__
+#ifndef DCFILTER_COMPAT_GETOPT_H
 /**
  * DISCLAIMER
  * This file has no copyright assigned and is placed in the Public Domain.
@@ -10,7 +10,7 @@
  * warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#define __GETOPT_H__
+#define DCFILTER_COMPAT_GETOPT_H
 
 /* All the headers include this file. */
 #include <crtdefs.h>
@@ -40,7 +40,7 @@ extern int getopt(int nargc, char * const *nargv, const char *options);
  * specific block, only when *not* __UNISTD_H_SOURCED__, in which
  * to declare the extended API.
  */
-#endif /* !defined(__GETOPT_H__) */
+#endif /* !defined(DCFILTER_COMPAT_GETOPT_H) */
 
 #if !defined(__GETOPT_BSD_H__) && defined(_BSD_SOURCE)
 #define __GETOPT_BSD_H__
