@@ -29,15 +29,9 @@ extern int getopt(int nargc, char * const *nargv, const char *options);
 }
 #endif
 /*
- * POSIX requires the `getopt' API to be specified in `unistd.h';
- * thus, `unistd.h' includes this header.  However, we do not want
- * to expose the `getopt_long' or `getopt_long_only' APIs, when
- * included in this manner.  Thus, close the standard __GETOPT_H__
- * declarations block, and open an additional __GETOPT_LONG_H__
- * specific block, only when *not* __UNISTD_H_SOURCED__, in which
- * to declare the extended API.
+ * Keep the long-option declarations below within this header's include
+ * guard while preserving the original MinGW compatibility macros.
  */
-#endif /* !defined(DCFILTER_COMPAT_GETOPT_H) */
 
 #if !defined(__GETOPT_BSD_H__) && defined(_BSD_SOURCE)
 #define __GETOPT_BSD_H__
@@ -92,3 +86,4 @@ extern int getopt_long_only(int nargc, char * const *nargv, const char *options,
 #endif
 
 #endif /* !defined(__UNISTD_H_SOURCED__) && !defined(__GETOPT_LONG_H__) */
+#endif /* !defined(DCFILTER_COMPAT_GETOPT_H) */
